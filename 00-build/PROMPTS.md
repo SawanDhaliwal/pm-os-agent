@@ -16,7 +16,7 @@ Two habits that make this work:
 
 > Set this repo up so I can run the Cortex agent. Install the dependencies in
 > `00-build/requirements.txt`, copy `00-build/.env.example` to `00-build/.env`, and
-> tell me exactly where to paste my OpenAI API key. Confirm Python is available and
+> tell me exactly where to paste my Anthropic API key. Confirm Python is available and
 > flag anything I need to install. Do not commit the `.env` file.
 
 Then, to check it runs at all:

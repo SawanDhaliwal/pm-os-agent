@@ -22,7 +22,7 @@ model.
 ```bash
 cd 00-build
 pip install -r requirements.txt
-cp .env.example .env        # add your OPENAI_API_KEY and set the caps
+cp .env.example .env        # add your ANTHROPIC_API_KEY and set the caps
 ```
 
 > The `.env` file is gitignored. Never commit your key. Also set a hard spend limit

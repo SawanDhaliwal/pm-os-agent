@@ -9,23 +9,35 @@ import json
 
 from prompts import CRITIC_SYSTEM
 
+VERDICT_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "verdict": {"type": "string", "enum": ["pass", "fail"]},
+        "reasons": {"type": "array", "items": {"type": "string"}},
+    },
+    "required": ["verdict", "reasons"],
+    "additionalProperties": False,
+}
+
 
 def review(client, model: str, proposed_output: str, source_data: str) -> dict:
     """Return {"verdict": "pass"|"fail", "reasons": [...]} for a proposed output."""
-    resp = client.chat.completions.create(
+    resp = client.messages.create(
         model=model,
+        max_tokens=1024,
+        system=CRITIC_SYSTEM,
         messages=[
-            {"role": "system", "content": CRITIC_SYSTEM},
             {"role": "user", "content":
                 f"SOURCE DATA Cortex used:\n{source_data}\n\n"
                 f"CORTEX PROPOSED OUTPUT:\n{proposed_output}"},
         ],
-        response_format={"type": "json_object"},
+        output_config={"format": {"type": "json_schema", "schema": VERDICT_SCHEMA}},
     )
     usage = resp.usage
+    text = next((b.text for b in resp.content if b.type == "text"), "")
     try:
-        verdict = json.loads(resp.choices[0].message.content)
-    except (json.JSONDecodeError, TypeError):
+        verdict = json.loads(text)
+    except json.JSONDecodeError:
         verdict = {"verdict": "fail", "reasons": ["critic returned unparseable output"]}
-    verdict["_usage"] = {"prompt": usage.prompt_tokens, "completion": usage.completion_tokens}
+    verdict["_usage"] = {"input": usage.input_tokens, "output": usage.output_tokens}
     return verdict
