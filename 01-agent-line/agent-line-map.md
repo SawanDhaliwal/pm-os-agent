@@ -7,7 +7,7 @@
 List every discrete decision or action in your agent's workflow, then score each one and place it **above** the line (a human owns it) or **below** (the agent owns it). Borderline calls get an HITL checkpoint.
 
 | Decision / action | Reversibility (H/M/L) | Blast radius (H/M/L) | Measurability (H/M/L) | Above / Below | HITL? | Justification |
-|---|---|---|---|---|---|
+|---|---|---|---|---|---|---|
 | _Pull transcript from product discovery meeting_ | H | L | H | Below | · | Easy to pull transcript, no work being done |
 | _Synthesize transcript into notes for review_ | H | L | H | Below | required | Need to ensure the agent has captured pertinent information and devoid of red herrings|
 | _Draft or update an existing PRD for review_ | M | L | M | Below | required | Final check to ensure the PRD is useful and makes sense|
