@@ -1,50 +1,40 @@
-# Loop Spec: Cortex PM Chief-of-Staff Agent
+# Loop Spec: Cortex
 
-> Module 2 · Loop Engineering, ★ Deliverable 2
->
-> Your one-page blueprint for how the work you handed to the agent (M1) actually *runs*.
-> An agent is just a prompt that fires itself, this spec says when it fires, what "done" means, and what it needs to do the job. Living document; refine as the course progresses.
+## Trigger and loop type
 
-## 1. Trigger & loop type
+Hook + cron backup
 
-**Chosen type:** _heartbeat · cron · hook · goal_
+## Why this loop type
 
-_Why this type? (e.g. a Monday-morning cron that assembles the weekly update, plus a hook on a new PRD to propose stories.)_
+A product discovery meeting triggers an update to a PRD or a need for a new PRD, a Cron  job ensure that no product discovery meeting was missed. Heartbeat would be wasteful as a product discovery meeting does not occur on a regular cadence, a pure goal loop misses the transcript when it is available.
 
-## 2. Goal / definition of done
+## Definition of done
 
-_What outcome is this loop responsible for? For a goal loop, what validation says "done"? (e.g. a status update grounded in real activity, queued for review, nothing posted.)_
+A drafted set of user stories, ready for upload into JIRA.
 
-## 3. Stop conditions
+## Stop conditions
 
-| Condition | What it looks like | What happens |
-|---|---|---|
-| **Success** | _…_ | _…_ |
-| **Stuck / give up** | _…_ | _escalate / log / halt_ |
-| **Escalate to human** | _…_ | _HITL checkpoint (from agent-line-map)_ |
+- **Success**: Draft created and queued for approval
+- **Stuck / give up**: Transcript cannot be pulled after 3 tries, stop and log.
+- **Escalate to human**: A note asks Cortex to push the user stories to JIRA, stop and let a human review before pushed.
 
-## 4. State
+## State
 
-_What persists across iterations, and what's the scope? (e.g. per-project context and last week's update; no cross-project confidential leakage.)_
+Handled task IDs (dedupe by event ID), attempts made, position in the approval flow, PRD scope, user stories created (to avoid duplicates). Scope: per-PRD, retained 30 days.
 
-## 5. The five things every loop needs
+## The five components
 
-| Component | For Cortex |
-|---|---|
-| **Work tree** (isolated workspace per run) | _…_ |
-| **Skills** (reusable capabilities) | _…_ |
-| **Plugins / connectors** (tools & access) | _…_ |
-| **Subagents** (delegated / validation) | _placeholder → M3 orchestration-map.md_ |
-| **State tracking** | _…_ |
+- **Work tree**: A space per PRD and grouped user stories so they can be separated and compared against each other for duplication.
+- **Skills**: summarize-product-discovery-transcript, draft-PRD, draft-user-stories
+- **Plugins / connectors**: JIRA (read/write), OneDrive/SharePoint (read/write), M365 (for drafting PRD)
+- **Subagents**: _…_
+- **State tracking**: Handled task IDs (dedupe by event ID), attempts made, position in the approval flow, PRD scope, user stories created (to avoid duplicates). Scope: per-PRD, retained 30 days.
 
-## 6. Context plan
+## Context plan
 
-_What context is written / selected / compressed / isolated each iteration? (Full depth in M4.)_
+_…_
 
-## 7. Hand-off to bounds & evals
+## Hand-off to bounds and evals (M5)
 
-_Placeholder → M5 `bounds-and-evals.md`: max iterations, timeout, budget, queue cap, kill switch._
+Write: log each iteration's user story results. Select: the appropriate PRD and user stories. Compress: summarize past PRDs. Isolate: keep other products out of the loop
 
-## Link to live loop
-
-_[path to your agent in `00-build/`]_
