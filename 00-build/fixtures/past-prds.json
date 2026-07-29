@@ -1,0 +1,18 @@
+[
+  {
+    "prd_id": "PRD-SEARCH",
+    "title": "In-app search relevance",
+    "shipped": "2026-02",
+    "structure_note": "Problem -> target user -> success metrics -> in/out of scope -> epics",
+    "tone_note": "Short declarative problem statement. Metrics always paired with a current baseline, never a bare target.",
+    "excerpt": "PROBLEM: Users cannot find work they created more than two weeks ago; 31% of sessions include a failed search. TARGET USER: Daily active editor with >200 items. SUCCESS: failed-search rate 31% -> 12%."
+  },
+  {
+    "prd_id": "PRD-IMPORT",
+    "title": "Bulk import from CSV and rival exports",
+    "shipped": "2026-05",
+    "structure_note": "Same skeleton; out-of-scope section used aggressively to kill adjacent asks",
+    "tone_note": "Every scope line traces to a named piece of evidence (interview id or metric).",
+    "excerpt": "OUT OF SCOPE: live two-way sync (asked for by 3 of 11 interviewees, deferred — no evidence it drives activation)."
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "key": "NS-41",
+    "prd_id": "PRD-NORTHSTAR",
+    "prd_scope_ref": "EPIC-ONBOARD-01",
+    "title": "Activation checklist shell with step state persistence",
+    "status": "done"
+  },
+  {
+    "key": "NS-42",
+    "prd_id": "PRD-NORTHSTAR",
+    "prd_scope_ref": "EPIC-ONBOARD-01",
+    "title": "Checklist progress indicator on the project header",
+    "status": "done"
+  },
+  {
+    "key": "NS-43",
+    "prd_id": "PRD-NORTHSTAR",
+    "prd_scope_ref": "EPIC-ONBOARD-02",
+    "title": "Emit step-completion events to the analytics pipeline",
+    "status": "done"
+  },
+  {
+    "key": "NS-44",
+    "prd_id": "PRD-NORTHSTAR",
+    "prd_scope_ref": "EPIC-ONBOARD-02",
+    "title": "Activation funnel dashboard for weekly review",
+    "status": "in_progress"
+  },
+  {
+    "key": "NS-45",
+    "prd_id": "PRD-NORTHSTAR",
+    "prd_scope_ref": "EPIC-ONBOARD-04",
+    "title": "Day-2 milestone email template and copy",
+    "status": "todo"
+  }
+]

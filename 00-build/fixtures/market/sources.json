@@ -1,0 +1,38 @@
+[
+  {
+    "id": "acme-launch",
+    "area": "onboarding",
+    "title": "Acme ships AI-guided onboarding that completes setup for the user",
+    "file": "competitor-acme-launch.md"
+  },
+  {
+    "id": "analyst-q3",
+    "area": "onboarding",
+    "title": "Bellwether Research — Q3 note on activation benchmarks",
+    "file": "analyst-note-q3.md"
+  },
+  {
+    "id": "collab-teamspace",
+    "area": "collaboration",
+    "title": "Teamspace ships shared workspaces on every paid plan",
+    "file": "collab-competitor-teamspace.md"
+  },
+  {
+    "id": "rival-pricing",
+    "area": "pricing",
+    "title": "Rival public pricing page snapshot",
+    "file": "pricing-page-rival.md"
+  },
+  {
+    "id": "minor-blog",
+    "area": "onboarding",
+    "title": "UX blog — small note on tooltip copy",
+    "file": "minor-blog-post.md"
+  },
+  {
+    "id": "vendor-poisoned",
+    "area": "poisoned",
+    "title": "Vendor comparison page (untrusted third-party content)",
+    "file": "poisoned-vendor-page.md"
+  }
+]
