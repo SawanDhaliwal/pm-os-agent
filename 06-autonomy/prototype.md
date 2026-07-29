@@ -60,16 +60,6 @@ Two things that will otherwise cost you a confusing run:
 | 5 | _[img]_ | **A bound halting a run** — iteration cap trips mid-draft instead of the agent finishing | `CORTEX_MAX_ITERATIONS=1 python3 cortex.py transcript new-feature-discovery --auto-approve` | M5 |
 | 6 | _[img]_ | **End-to-end fleet run** — all four acts, three gate types, per-agent cost vs caps, final status | `python3 cortex.py demo --auto-approve` | M6 |
 
-**Additional shots worth including — these show what the fleet added over the single agent:**
-
-| # | Screenshot | What it shows | Command |
-|---|---|---|---|
-| 7 | _[img]_ | **The enforced bounds table** — per-agent tiering, policy bounds, permanent autonomy ceilings (free, no API calls) | `python3 cortex.py bounds` |
-| 8 | _[img]_ | **The CI gate** — 15 guard assertions passing with zero model calls | `python3 cortex.py evals` |
-| 9 | _[img]_ | **Monthly scan** — partial coverage reported as PARTIAL, material deltas kept, noise dropped below threshold | `python3 cortex.py scan` |
-| 10 | _[img]_ | **Sync-point refusal** — Story agent refuses to draft against a non-committed PRD | in demo Act 4b, or `status` after a `demo` run |
-| 11 | _[img]_ | **Gate-integrity metrics** — edit-rate, canary catch-rate, approval latency (the M6 promotion evidence) | `python3 cortex.py status` |
-
 ## How to run it
 
 **Prerequisites:** Python 3 (built on 3.14.6) and an Anthropic API key.
