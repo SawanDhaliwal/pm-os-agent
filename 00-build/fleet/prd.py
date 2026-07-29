@@ -143,6 +143,23 @@ def run(order: dict) -> dict:
         return {"status": "escalated", "reason": artifact["escalate_reason"]}
 
     artifact["prd_id"] = prd_id  # never let the model rename the target
+
+    # The interview/user evidence arrives in the work order (the Router's transcript
+    # synthesis), not from a tool call — so it is absent from source_log. Without it the
+    # Validator sees a PRD citing interviews it cannot find and correctly calls the
+    # evidence fabricated. It is part of "the exact source data the agent used", so it
+    # belongs in the provenance the Validator is shown.
+    provenance = [
+        f"work_order.interview_summary -> {payload.get('interview_summary', '')}",
+        f"work_order.signals -> {payload.get('signals', [])}",
+        f"work_order.reason -> {payload.get('reason', '')}",
+    ]
+    if is_research_driven:
+        provenance.append(
+            f"work_order.delta_summary (monthly scan) -> {payload.get('delta_summary')} "
+            f"[materiality {payload.get('materiality')}]"
+        )
+    source_log = provenance + source_log
     trace.artifact(f"{kind_label} DRAFT (queued, not committed)", _render(artifact))
 
     # --- Independent validation, bounded revision loop -----------------------
@@ -170,6 +187,7 @@ def run(order: dict) -> dict:
             trace.bound(f"{exc.bound_name} — {exc.detail}", tripped=True)
             return {"status": "bound_tripped", "bound": exc.bound_name}
         artifact["prd_id"] = prd_id
+        source_log = provenance + source_log  # re-attach work-order evidence
         verdict = validator.validate_prd(artifact, source_log, is_update=not is_new)
         validator.report(verdict)
 

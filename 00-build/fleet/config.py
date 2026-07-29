@@ -65,6 +65,28 @@ AGENTS: dict[str, Budget] = {
     "validator_prd": Budget(TIER_FRONTIER, 3, 180, 1.00),
 }
 
+# --- Global ceilings (optional) ----------------------------------------------
+# If set, these TIGHTEN every agent's cap (never loosen it — min() with the per-agent
+# default). Two reasons they exist:
+#   1. They honour CORTEX_MAX_ITERATIONS / CORTEX_COST_CAP_USD, which the original
+#      single-agent build used and which may already be in a .env.
+#   2. They make a bound trip reproducible on demand, which the deliverable requires
+#      showing: `CORTEX_MAX_ITERATIONS=1 python3 cortex.py transcript ...` halts the
+#      PRD agent on its iteration cap instead of on success.
+_G_ITER = os.environ.get("CORTEX_MAX_ITERATIONS")
+_G_COST = os.environ.get("CORTEX_COST_CAP_USD")
+if _G_ITER or _G_COST:
+    import dataclasses
+
+    AGENTS = {
+        name: dataclasses.replace(
+            b,
+            max_iterations=min(b.max_iterations, int(_G_ITER)) if _G_ITER else b.max_iterations,
+            cost_usd=min(b.cost_usd, float(_G_COST)) if _G_COST else b.cost_usd,
+        )
+        for name, b in AGENTS.items()
+    }
+
 # --- Commitment / policy bounds ----------------------------------------------
 MAX_QUEUE_ITEMS = int(os.environ.get("CORTEX_MAX_QUEUE_ITEMS", "10"))
 MAX_REVISIONS = int(os.environ.get("CORTEX_MAX_REVISIONS", "2"))

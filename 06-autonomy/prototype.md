@@ -42,16 +42,33 @@ Timeouts are circuit breakers at ~2–3× expected p95, sized so that **iteratio
 
 ## Screenshots (required, collected M2 to M6)
 
-Real screenshots of *your* Cortex running. These are the `00-build/CORTEX-ANATOMY.md` set and they are required, a link alone is not enough.
+Real screenshots of *your* Cortex fleet running. A link alone is not enough. Each row is one command — run it, screenshot the terminal.
 
-| # | Screenshot | What it shows | From |
+Run everything from `00-build/`. `python3 cortex.py reset && python3 cortex.py seed` between shots if a run left gates pending.
+
+Two things that will otherwise cost you a confusing run:
+
+- **`--auto-approve` is required on any shot that must reach the PRD agent.** Without it the run correctly halts at the `COST_CONFIRM` gate and the PRD work order stays blocked, so no draft appears. (Alternatively, approve the cost gate by hand.)
+- **`.env` sets `CORTEX_COST_CAP_USD=0.50`, which globally tightens every agent** — the PRD agent drops from its designed $5.00 to $0.50, and 15 iterations to 8. A clean frontier-tier PRD run measures ~$0.10, so $0.50 normally holds; but two validator revisions land near the ceiling and will trip it mid-run. The PRD shots below override it per-command so a screenshot doesn't fail for a reason you didn't intend. `python3 cortex.py bounds` always shows the *effective* values.
+
+| # | Screenshot | What it shows | Command | From |
+|---|---|---|---|---|
+| 1 | _[img]_ | **Happy path + HITL gate** — story batch drafted against a committed PRD, validator passes, then a `JIRA_PUSH` gate holds it. Nothing created. | `python3 cortex.py transcript epic-deep-dive` | M2 |
+| 2 | _[img]_ | **Validator rejecting bad work** — a seeded canary (story referencing a non-existent epic) caught and rejected | `python3 cortex.py canary` then `reject <gate_id>` | M3 |
+| 3 | _[img]_ | **Grounded artifact** — PRD draft citing retrieved market research, OKRs and interview evidence, with an explicit evidence trail | `CORTEX_COST_CAP_USD=5 python3 cortex.py transcript new-feature-discovery --auto-approve` | M4 |
+| 4 | _[img]_ | **Injection refused + escalated** — transcript demanding auto-push, embargo disclosure and a committed GA date | `python3 cortex.py transcript jailbreak-injection` | M5 |
+| 5 | _[img]_ | **A bound halting a run** — iteration cap trips mid-draft instead of the agent finishing | `CORTEX_MAX_ITERATIONS=1 python3 cortex.py transcript new-feature-discovery --auto-approve` | M5 |
+| 6 | _[img]_ | **End-to-end fleet run** — all four acts, three gate types, per-agent cost vs caps, final status | `python3 cortex.py demo --auto-approve` | M6 |
+
+**Additional shots worth including — these show what the fleet added over the single agent:**
+
+| # | Screenshot | What it shows | Command |
 |---|---|---|---|
-| 1 | _[img]_ | happy-path run: a real drafted update + the HITL checkpoint (queued, not posted) | M2 |
-| 2 | _[img]_ | the critic rejecting a bad draft (revise/block) | M3 |
-| 3 | _[img]_ | a grounded update citing pulled activity + a caught hallucination | M4 |
-| 4 | _[img]_ | jailbreak refused + escalated | M5 |
-| 5 | _[img]_ | an iteration/cost/queue bound halting a runaway | M5 |
-| 6 | _[img]_ | end-to-end run | M6 |
+| 7 | _[img]_ | **The enforced bounds table** — per-agent tiering, policy bounds, permanent autonomy ceilings (free, no API calls) | `python3 cortex.py bounds` |
+| 8 | _[img]_ | **The CI gate** — 15 guard assertions passing with zero model calls | `python3 cortex.py evals` |
+| 9 | _[img]_ | **Monthly scan** — partial coverage reported as PARTIAL, material deltas kept, noise dropped below threshold | `python3 cortex.py scan` |
+| 10 | _[img]_ | **Sync-point refusal** — Story agent refuses to draft against a non-committed PRD | in demo Act 4b, or `status` after a `demo` run |
+| 11 | _[img]_ | **Gate-integrity metrics** — edit-rate, canary catch-rate, approval latency (the M6 promotion evidence) | `python3 cortex.py status` |
 
 ## How to run it
 
