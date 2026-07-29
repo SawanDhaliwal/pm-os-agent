@@ -151,7 +151,10 @@ def tool_loop(
                 else:
                     payload = fn(**blk.input)
                     trace.tool(agent.split(":")[0], blk.name, blk.input, json.dumps(payload))
-                source_log.append(f"{blk.name}({blk.input}) -> {json.dumps(payload)[:1200]}")
+                # Keep enough of each result that the Validator can actually verify a
+                # figure against it. Truncating hard here makes correctly-sourced
+                # numbers look invented and the Validator fails good work.
+                source_log.append(f"{blk.name}({blk.input}) -> {json.dumps(payload)[:5000]}")
                 results.append(
                     {
                         "type": "tool_result",
